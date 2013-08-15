@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>Hits, misses and hedge funds</string>
+		<key>href</key>
+		<string>http://traffic.libsyn.com/scriptnotes/scriptnotes_ep_102.m4a</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>FS115 Die blaue Maus auf dem Berg</string>
+		<key>href</key>
+		<string>http://meta.metaebene.me/media/mm/fs115-die-blaue-maus-auf-dem-berg.mp3</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>auphonic m4a</string>
+		<key>href</key>
+		<string>https://auphonic.com/media/blog/auphonic_chapters_demo.m4a</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Episode #131 - Käse Tetris</string>
+		<key>href</key>
+		<string>http://fanboys.fm/episodes/FAN131.mp3</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>auphonic mp3</string>
+		<key>href</key>
+		<string>https://auphonic.com/media/blog/auphonic_chapters_demo.mp3</string>
+	</dict>
+</array>
+</plist>
