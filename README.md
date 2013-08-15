@@ -12,7 +12,7 @@ This modest implementation in Objective-C has been inspired by a [post](http://a
     AVAsset *asset = [self assetWithResource:@"auphonic_chapters_demo" ofType:@"mp3"];
     NSArray *chapters = [[MNAVChapterReader new] chaptersFromAsset:asset];
 
-Please the note that this is blocking and thus should not run in the main loop.
+Please note that this is blocking and thus should not run in the main loop.
 
 ## MNAVChapter
 
