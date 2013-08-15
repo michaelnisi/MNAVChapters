@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Michael Nisi. All rights reserved.
 //
 
-#import "MNAVChapters.h"
+#import "MNAVChapterReader.h"
 #import <UIKit/UIKit.h>
 
 # pragma mark - MNAVChapters
@@ -15,7 +15,7 @@ static NSString *const MNAVMetadataFormatApple = @"com.apple.itunes";
 static NSString *const MNAVMetadataFormatMP4 = @"org.mp4ra";
 static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 
-@implementation MNAVChapters
+@implementation MNAVChapterReader
 
 - (NSArray *)chaptersFromAsset:(AVAsset *)asset {
     NSArray *formats = asset.availableMetadataFormats;

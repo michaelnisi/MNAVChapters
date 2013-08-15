@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import <UIKit/UIKit.h>
-#import "MNAVChapters.h"
+#import "MNAVChapterReader.h"
 
 @interface ChaptersMP3Tests : XCTestCase
 @property (nonatomic) NSArray *actualChapters;

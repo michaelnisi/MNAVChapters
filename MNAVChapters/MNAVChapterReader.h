@@ -21,7 +21,7 @@
 + (MNAVChapter *)chapterWithTime:(CMTime)time duration:(CMTime)duration;
 @end
 
-@interface MNAVChapters : NSObject
+@interface MNAVChapterReader : NSObject
 - (NSArray *)chaptersFromAsset:(AVAsset *)asset;
 @end
 

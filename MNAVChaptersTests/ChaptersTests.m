@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import <AVFoundation/AVFoundation.h>
-#import "MNAVChapters.h"
+#import "MNAVChapterReader.h"
 
 @interface ChaptersTests : XCTestCase
 @property (nonatomic) NSArray *auphonic_chapters;
@@ -72,7 +72,7 @@
 
 - (void)testMP3 {
     AVAsset *asset = [self assetWithResource:@"auphonic_chapters_demo" ofType:@"mp3"];
-    MNAVChapters *parser = [MNAVChapters new];
+    MNAVChapterReader *parser = [MNAVChapterReader new];
     NSArray *actual = [parser chaptersFromAsset:asset];
     NSArray *expected = self.auphonic_chapters;
     XCTAssertTrue([actual isEqualToArray:expected], @"");
@@ -80,7 +80,7 @@
 
 - (void)testMP4 {
     AVAsset *asset = [self assetWithResource:@"auphonic_chapters_demo" ofType:@"m4a"];
-    MNAVChapters *parser = [MNAVChapters new];
+    MNAVChapterReader *parser = [MNAVChapterReader new];
     NSArray *actual = [parser chaptersFromAsset:asset];
     NSArray *expected = self.auphonic_chapters;
     XCTAssertTrue([actual isEqualToArray:expected], @"");

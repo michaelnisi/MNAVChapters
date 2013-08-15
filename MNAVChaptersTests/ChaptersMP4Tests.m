@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "MNAVChapters.h"
+#import "MNAVChapterReader.h"
 #import <UIKit/UIKit.h>
 
 @interface ChaptersMP4Tests : XCTestCase

@@ -7,7 +7,7 @@
 //
 
 #import "ChaptersViewController.h"
-#import <MNAVChapters.h>
+#import <MNAVChapterReader.h>
 
 @interface ChaptersViewController ()
 @property (nonatomic) NSArray *chapters;
@@ -30,8 +30,8 @@
     [self.queue addOperationWithBlock:^{
         NSURL *url = [NSURL URLWithString:[episode valueForKey:@"href"]];
         AVAsset *asset = [AVAsset assetWithURL:url];
-        MNAVChapters *parser = [MNAVChapters new];
-        _chapters = [parser chaptersFromAsset:asset];
+        MNAVChapterReader *reader = [MNAVChapterReader new];
+        _chapters = [reader chaptersFromAsset:asset];
         dispatch_async(dispatch_get_main_queue(), ^{
             [tableView reloadData];
         });

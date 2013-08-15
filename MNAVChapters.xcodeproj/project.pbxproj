@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4CE292FD17BD20A300C91790 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE292FC17BD20A300C91790 /* Foundation.framework */; };
-		4CE2930217BD20A300C91790 /* MNAVChapters.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4CE2930117BD20A300C91790 /* MNAVChapters.h */; };
-		4CE2930417BD20A300C91790 /* MNAVChapters.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE2930317BD20A300C91790 /* MNAVChapters.m */; };
+		4CE2930217BD20A300C91790 /* MNAVChapterReader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4CE2930117BD20A300C91790 /* MNAVChapterReader.h */; };
+		4CE2930417BD20A300C91790 /* MNAVChapterReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CE2930317BD20A300C91790 /* MNAVChapterReader.m */; };
 		4CE2930B17BD20A300C91790 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE2930A17BD20A300C91790 /* XCTest.framework */; };
 		4CE2930C17BD20A300C91790 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE292FC17BD20A300C91790 /* Foundation.framework */; };
 		4CE2930E17BD20A300C91790 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE2930D17BD20A300C91790 /* UIKit.framework */; };
@@ -47,7 +47,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				4CE2930217BD20A300C91790 /* MNAVChapters.h in CopyFiles */,
+				4CE2930217BD20A300C91790 /* MNAVChapterReader.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,8 +57,8 @@
 		4CE292F917BD20A300C91790 /* libMNAVChapters.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMNAVChapters.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE292FC17BD20A300C91790 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4CE2930017BD20A300C91790 /* MNAVChapters-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MNAVChapters-Prefix.pch"; sourceTree = "<group>"; };
-		4CE2930117BD20A300C91790 /* MNAVChapters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MNAVChapters.h; sourceTree = "<group>"; };
-		4CE2930317BD20A300C91790 /* MNAVChapters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MNAVChapters.m; sourceTree = "<group>"; };
+		4CE2930117BD20A300C91790 /* MNAVChapterReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MNAVChapterReader.h; sourceTree = "<group>"; };
+		4CE2930317BD20A300C91790 /* MNAVChapterReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MNAVChapterReader.m; sourceTree = "<group>"; };
 		4CE2930917BD20A300C91790 /* MNAVChaptersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MNAVChaptersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE2930A17BD20A300C91790 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4CE2930D17BD20A300C91790 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -134,8 +134,8 @@
 		4CE292FE17BD20A300C91790 /* MNAVChapters */ = {
 			isa = PBXGroup;
 			children = (
-				4CE2930117BD20A300C91790 /* MNAVChapters.h */,
-				4CE2930317BD20A300C91790 /* MNAVChapters.m */,
+				4CE2930117BD20A300C91790 /* MNAVChapterReader.h */,
+				4CE2930317BD20A300C91790 /* MNAVChapterReader.m */,
 				4CE292FF17BD20A300C91790 /* Supporting Files */,
 			);
 			path = MNAVChapters;
@@ -278,7 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CE2930417BD20A300C91790 /* MNAVChapters.m in Sources */,
+				4CE2930417BD20A300C91790 /* MNAVChapterReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
