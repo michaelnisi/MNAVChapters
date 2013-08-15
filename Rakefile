@@ -36,6 +36,7 @@ end
 # @return [Pod::Version] The version as reported by the Podspec.
 #
 def spec_version
+  require 'rubygems'   
   require 'cocoapods'
   spec = Pod::Specification.from_file(podspec_path)
   spec.version
