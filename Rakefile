@@ -33,8 +33,6 @@ task :release do
   sh "pod push master #{podspec_path}"
 end
 
-# @return [Pod::Version] The version as reported by the Podspec.
-#
 def spec_version
   require 'rubygems'   
   require 'cocoapods'
@@ -42,8 +40,6 @@ def spec_version
   spec.version
 end
 
-# @return [String] The relative path of the Podspec.
-#
 def podspec_path
   podspecs = Dir.glob('*.podspec')
   if podspecs.count == 1
@@ -52,4 +48,3 @@ def podspec_path
     raise "Could not select a podspec"
   end
 end
-
