@@ -9,7 +9,7 @@
 #import "MNAVChapterReader.h"
 #import <UIKit/UIKit.h>
 
-# pragma mark - MNAVChapters
+# pragma mark - MNAVChapterReader
 
 static NSString *const MNAVMetadataFormatApple = @"com.apple.itunes";
 static NSString *const MNAVMetadataFormatMP4 = @"org.mp4ra";
@@ -19,7 +19,6 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 
 - (NSArray *)chaptersFromAsset:(AVAsset *)asset {
     NSArray *formats = asset.availableMetadataFormats;
-    
     id <MNAVChapterReader> parser = nil;
     NSArray *result = nil;
     for (NSString *format in formats) {
@@ -35,7 +34,7 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 
 @end
 
-# pragma mark - MNMetadataChapter
+# pragma mark - MNAVChapter
 
 @implementation MNAVChapter
 
@@ -52,12 +51,10 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 
 - (MNAVChapter *)initWithTime:(CMTime)time duration:(CMTime)duration {
     self = [super init];
-    
     if (self) {
         self.time = time;
         self.duration = duration;
     }
-    
     return self;
 }
 
@@ -72,7 +69,7 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 
 @end
 
-# pragma mark - MNMP4Parser
+# pragma mark - MNAVChapterReaderMP4
 
 @implementation MNAVChapterReaderMP4
 - (NSArray *)chaptersFromAsset:(AVAsset *)asset {
@@ -82,13 +79,11 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
     NSMutableArray *chapters = [[NSMutableArray alloc] initWithCapacity:chapterCount];
     for (AVTimedMetadataGroup *group in groups) {
         MNAVChapter *chapter = [MNAVChapter new];
-        
         chapter.title = [self titleFromGroup:group];
         chapter.artwork = [self imageFromGroup:group];
         chapter.url = [self urlFromGroup:group forTitle:chapter.title];
         chapter.time = [self timeFromGroup:group];
         chapter.duration = [self durationFromGroup:group];
-        
         [chapters addObject:chapter];
     }
     return chapters;
@@ -143,7 +138,7 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 }
 @end
 
-# pragma mark - MNID3Parser
+# pragma mark - MNAVChapterReaderMP3
 
 #define SUBDATA(data,loc,len) [data subdataWithRange:NSMakeRange(loc, len)]
 
@@ -169,8 +164,8 @@ typedef NS_ENUM(NSUInteger, ID3TextEncoding) {
 
 static NSString *const MNAVMetadataID3MetadataKeyChapter = @"CHAP";
 
-unsigned int is_set(char *bytes, int size);
-unsigned int btoi(char* bytes, int size, int offset);
+unsigned long is_set(char *bytes, long size);
+long btoi(char* bytes, long size, long offset);
 
 @implementation MNAVChapterReaderMP3
 
@@ -199,8 +194,8 @@ unsigned int btoi(char* bytes, int size, int offset);
     NSData *startOffsetData = SUBDATA(data, index += ID3HeaderSize, ID3HeaderSize);
     NSData *endOffsetData = SUBDATA(data, index += ID3HeaderSize, ID3HeaderSize);
     
-    NSUInteger startTime = btoi((char *)startTimeData.bytes, startTimeData.length, 0);
-    NSUInteger endTime = btoi((char *)endTimeData.bytes, endTimeData.length, 0);
+    NSInteger startTime = btoi((char *)startTimeData.bytes, startTimeData.length, 0);
+    NSInteger endTime = btoi((char *)endTimeData.bytes, endTimeData.length, 0);
     
     BOOL hasStartOffset = is_set((char *)startOffsetData.bytes, startOffsetData.length);
     assert(!hasStartOffset);
@@ -226,7 +221,7 @@ unsigned int btoi(char* bytes, int size, int offset);
     
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyAttachedPicture inData:data];
-        uint loc = range.location;
+        unsigned long loc = range.location;
         
         NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
@@ -261,7 +256,7 @@ unsigned int btoi(char* bytes, int size, int offset);
     
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyUserURL inData:data];
-        uint loc = range.location;
+        unsigned long loc = range.location;
         
         NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
@@ -287,7 +282,7 @@ unsigned int btoi(char* bytes, int size, int offset);
     NSString *result = nil;
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyTitleDescription inData:data];
-        uint loc = range.location;
+        unsigned long loc = range.location;
         NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
         NSUInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
         NSData *titleData = SUBDATA(data, loc + ID3FrameFrame + ID3FrameEncoding, size - ID3FrameEncoding);
@@ -332,7 +327,7 @@ unsigned int btoi(char* bytes, int size, int offset);
 
 #pragma mark - utils
 
-unsigned int is_set(char *bytes, int size) {
+unsigned long is_set(char *bytes, long size) {
     unsigned int result = 0x00;
     while (size-- && !result) {
         result = bytes[size] != '\xff';
@@ -340,7 +335,7 @@ unsigned int is_set(char *bytes, int size) {
     return result;
 }
 
-unsigned int btoi(char* bytes, int size, int offset) {
+long btoi(char* bytes, long size, long offset) {
     int i;
     unsigned int result = 0x00;
     for(i = 0; i < size; i++) {
@@ -349,4 +344,3 @@ unsigned int btoi(char* bytes, int size, int offset) {
     }
     return result;
 }
-
