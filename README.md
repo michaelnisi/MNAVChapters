@@ -27,7 +27,7 @@ NSArray *chapters = [[MNAVChapterReader new] chaptersFromAsset:asset];
 ```
 ## Installation
 
-MNAVChapters is available through [CocoaPods](http://cocoapods.org), to install, simply add the following line to your Podfile:
+MNAVChapters is available through [CocoaPods](http://cocoapods.org). To install simply add the following line to your Podfile:
 ```
 pod "MNAVChapters"
 ```
