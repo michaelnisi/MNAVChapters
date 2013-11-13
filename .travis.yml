@@ -1,2 +1,6 @@
 language: objective-c
-script: xctool -sdk iphonesimulator -workspace MNAVChapters.xcworkspace -scheme MNAVChapters test
+before_install:
+  - brew update
+  - brew uninstall xctool && brew install xctool --HEAD
+script: rake test
+
