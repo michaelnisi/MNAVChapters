@@ -1,7 +1,7 @@
 
 task :default => 'test'
 
-desc "Run the MNAVChapters tests for iOS"
+desc "Run the MNAVChapters tests"
 task :test do
     $ios_success = system("xctool -workspace MNAVChapters.xcworkspace -scheme MNAVChapters test -sdk iphonesimulator")
   puts "\033[0;31m! iOS unit tests failed" unless $ios_success
