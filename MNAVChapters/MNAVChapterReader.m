@@ -129,8 +129,12 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 }
 
 - (UIImage *)imageFromGroup:(AVTimedMetadataGroup *)group {
-    AVMetadataItem *item = [self itemsFromArray:group.items withKey:@"artwork"][0];
-    return [UIImage imageWithData:item.dataValue];
+    NSArray *itemArray = [self itemsFromArray:group.items withKey:@"artwork"];
+    if ([itemArray count] > 0) {
+        AVMetadataItem *item = itemArray[0];
+        return [UIImage imageWithData:item.dataValue];
+    }
+    return NULL;
 }
 
 - (NSArray *)itemsFromArray:(NSArray *)items withKey:(NSString *)key {
