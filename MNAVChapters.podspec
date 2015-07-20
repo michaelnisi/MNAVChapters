@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "MNAVChapters"
-  s.version      = "0.1.1"
+  s.version      = "0.1.2"
   s.summary      = "Read chapter metadata of audiovisual assets."
   s.homepage     = "http://github.com/michaelnisi/MNAVChapters"
   s.license      = 'MIT'

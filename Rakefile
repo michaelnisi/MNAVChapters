@@ -48,7 +48,7 @@ task :release do
 end
 
 def spec_version
-  require 'rubygems'   
+  require 'rubygems'
   require 'cocoapods'
   spec = Pod::Specification.from_file(podspec_path)
   spec.version

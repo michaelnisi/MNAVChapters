@@ -1,6 +1,7 @@
 language: objective-c
-before_install:
-  - brew update
-  - brew install xctool
 script: rake test
-
+branches:
+  only:
+    - master
+  except:
+    - /^v[0-9]/
