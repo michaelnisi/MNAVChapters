@@ -11,8 +11,8 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface MNAVChapter : NSObject
-@property (nonatomic) NSString *title;
-@property (nonatomic) NSString *url;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *url;
 @property (nonatomic) CMTime time;
 @property (nonatomic) CMTime duration;
 @property (nonatomic) UIImage *artwork;
