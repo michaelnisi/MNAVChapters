@@ -52,8 +52,8 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 - (MNAVChapter *)initWithTime:(CMTime)time duration:(CMTime)duration {
     self = [super init];
     if (self) {
-        self.time = time;
-        self.duration = duration;
+        _time = time;
+        _duration = duration;
     }
     return self;
 }
