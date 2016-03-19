@@ -292,7 +292,12 @@ long btoi(char* bytes, long size, long offset);
         NSData *titleData = SUBDATA(data, loc + ID3FrameFrame + ID3FrameEncoding, size - ID3FrameEncoding);
         result = [[NSString alloc] initWithBytes:titleData.bytes
                                           length:titleData.length
-                                        encoding:NSUTF16StringEncoding];
+                                        encoding:NSUTF8StringEncoding];
+        if (result == nil) {
+            result =[[NSString alloc] initWithBytes:titleData.bytes
+                                             length:titleData.length
+                                           encoding:NSUTF16StringEncoding];
+        }
     }
     @catch (NSException *exception) {
         //
