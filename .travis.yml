@@ -1,5 +1,6 @@
+sudo: false
 language: objective-c
-script: rake test
+script: make test
 branches:
   only:
     - master

@@ -22,7 +22,7 @@
 @end
 
 @interface MNAVChapterReader : NSObject
-- (NSArray *)chaptersFromAsset:(AVAsset *)asset;
++ (NSArray *)chaptersFromAsset:(AVAsset *)asset;
 @end
 
 # pragma mark - Internal

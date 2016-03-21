@@ -72,16 +72,14 @@
 
 - (void)testMP3 {
     AVAsset *asset = [self assetWithResource:@"auphonic_chapters_demo" ofType:@"mp3"];
-    MNAVChapterReader *parser = [MNAVChapterReader new];
-    NSArray *actual = [parser chaptersFromAsset:asset];
+    NSArray *actual = [MNAVChapterReader chaptersFromAsset:asset];
     NSArray *expected = self.auphonic_chapters;
     XCTAssertTrue([actual isEqualToArray:expected], @"");
 }
 
 - (void)testMP4 {
     AVAsset *asset = [self assetWithResource:@"auphonic_chapters_demo" ofType:@"m4a"];
-    MNAVChapterReader *parser = [MNAVChapterReader new];
-    NSArray *actual = [parser chaptersFromAsset:asset];
+    NSArray *actual = [MNAVChapterReader chaptersFromAsset:asset];
     NSArray *expected = self.auphonic_chapters;
     XCTAssertTrue([actual isEqualToArray:expected], @"");
 }

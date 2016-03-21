@@ -17,7 +17,7 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
 
 @implementation MNAVChapterReader
 
-- (NSArray *)chaptersFromAsset:(AVAsset *)asset {
++ (NSArray *)chaptersFromAsset:(AVAsset *)asset {
     NSArray *formats = asset.availableMetadataFormats;
     id <MNAVChapterReader> parser = nil;
     NSArray *result = nil;

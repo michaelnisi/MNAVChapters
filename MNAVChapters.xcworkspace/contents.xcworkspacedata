@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:example/example.xcodeproj">
+      location = "group:MNAVChaptersExample/MNAVChaptersExample.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:MNAVChapters.xcodeproj">
