@@ -89,7 +89,7 @@ $ make test
 
 ## Example
 
-This repo contains an Xcode workspace to provide an easy to use example written in [Swift](https://swift.org/). When you are running the app for the first time and tap on one of the episodes, be patient, it will have to download the media files, which, depending on your network, might take some time. Once received, the files are kept in `"/Downloads"` and, on further requests, will load from there.
+This repo contains an Xcode workspace to provide an easy to use example, written in [Swift](https://swift.org/). When you are running the app for the first time, and tap on one of the episodes, be patient. It will have to download the media files, which, depending on your network might take some time. Once received, the files are kept in `"/Documents"`, and onwardly loaded from there.
 
 ## License
 

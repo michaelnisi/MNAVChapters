@@ -46,12 +46,11 @@ class DetailViewController: UITableViewController {
     
     let fm = NSFileManager.defaultManager()
     let dir = try! fm.URLForDirectory(
-      .DownloadsDirectory,
+      .DocumentDirectory,
       inDomain: .UserDomainMask,
       appropriateForURL: nil,
       create: true
     )
-    print(dir)
     let targetURL = dir.URLByAppendingPathComponent(url.lastPathComponent!)
     guard !fm.fileExistsAtPath((targetURL.path)!) else {
       return update(self, url: targetURL)
