@@ -46,11 +46,12 @@ class DetailViewController: UITableViewController {
     
     let fm = NSFileManager.defaultManager()
     let dir = try! fm.URLForDirectory(
-      .DocumentDirectory,
+      .CachesDirectory,
       inDomain: .UserDomainMask,
       appropriateForURL: nil,
       create: true
     )
+    print(dir)
     let targetURL = dir.URLByAppendingPathComponent(url.lastPathComponent!)
     guard !fm.fileExistsAtPath((targetURL.path)!) else {
       return update(self, url: targetURL)
@@ -96,7 +97,7 @@ class DetailViewController: UITableViewController {
       id, forIndexPath: indexPath
     )
     let chapter = chapters![indexPath.row]
-    cell.textLabel!.text = chapter.title
+    cell.textLabel?.text = chapter.title
     cell.imageView?.image = chapter.artwork
     return cell
   }

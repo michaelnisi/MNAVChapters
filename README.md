@@ -1,10 +1,10 @@
 # MNAVChapters - read chapter marks
 
-The **MNAVChapters** iOS library reads chapter metadata of audiovisual assets. It reads chapters from [MPEG-4](http://en.wikipedia.org/wiki/MPEG-4_Part_14) and specifically [MP3](http://en.wikipedia.org/wiki/MP3) files. Although the [id3v2](http://id3.org/id3v2-chapters-1.0) standard specifies the chapter frame since 2005, I couldn't find a C or Objective-C library that parses this frame correctly.
-
-This modest Objective-C implementation has been inspired by a [post](http://auphonic.com/blog/2013/07/03/chapter-marks-and-enhanced-podcasts/) over on the [auphonic](https://auphonic.com/) blog.
+The **MNAVChapters** iOS library reads chapter metadata of audiovisual assets. It reads chapters from [MPEG-4](http://en.wikipedia.org/wiki/MPEG-4_Part_14) and specifically [MP3](http://en.wikipedia.org/wiki/MP3) files.
 
 [![Build Status](https://secure.travis-ci.org/michaelnisi/MNAVChapters.svg)](http://travis-ci.org/michaelnisi/MNAVChapters)
+
+Although the [id3v2](http://id3.org/id3v2-chapters-1.0) standard specifies the chapter frame since 2005, I couldn't find a C or Objective-C library that parses this frame correctly. So, inspired by a [post](http://auphonic.com/blog/2013/07/03/chapter-marks-and-enhanced-podcasts/) over on the [auphonic](https://auphonic.com/) blog, I started this modest Objective-C implementation.
 
 ## MNAVChapter
 
@@ -89,7 +89,7 @@ $ make test
 
 ## Example
 
-This repo contains an Xcode workspace to provide an easy to use example, written in [Swift](https://swift.org/). When you are running the app for the first time, and tap on one of the episodes, be patient. It will have to download the media files, which, depending on your network might take some time. Once received, the files are kept in `"/Documents"`, and onwardly loaded from there.
+This repo contains an Xcode workspace to provide an easy to use example, written in [Swift](https://swift.org/). When you are running the app for the first time, and tap on one of the episodes, be patient. It will have to download the media files, which, depending on your network might take some time. Once received, the files are copied to `"/Library/Caches/"`, and onwardly read from there.
 
 ## License
 
