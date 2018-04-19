@@ -20,9 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     let svc = self.window!.rootViewController as! UISplitViewController
     let i = svc.viewControllers.count - 1
     let nav = svc.viewControllers[i] as! UINavigationController
-    nav.topViewController!.navigationItem.leftBarButtonItem = svc.displayModeButtonItem()
+    nav.topViewController!.navigationItem.leftBarButtonItem = svc.displayModeButtonItem
     svc.delegate = self
-    svc.preferredDisplayMode = .AllVisible
+    svc.preferredDisplayMode = .allVisible
     return true
   }
 

@@ -14,15 +14,16 @@ struct Item {
 }
 
 func loadItems(name: String) -> [Item] {
-  let bundle = NSBundle.mainBundle()
-  let path = bundle.pathForResource(name, ofType: "json")!
-  let url = NSURL(fileURLWithPath: path)
-  let data = NSData(contentsOfURL: url)
-  let json = try! NSJSONSerialization.JSONObjectWithData(
-    data!, options: .AllowFragments) as! NSArray
+  let bundle = Bundle.main
+  let path = bundle.path(forResource: name, ofType: "json")!
+  let url = URL(fileURLWithPath: path)
+  let data = try! Data(contentsOf: url)
+  let json = try! JSONSerialization.jsonObject(
+    with: data, options: .allowFragments) as! NSArray
   return json.map {
-    let title = $0["title"] as! String
-    let url = $0["url"] as! String
+    let item = $0 as AnyObject
+    let title = item["title"] as! String
+    let url = item["url"] as! String
     return Item(title: title, url: url)
   }
 }
@@ -31,7 +32,7 @@ class MasterViewController: UITableViewController {
 
   var detailViewController: DetailViewController? = nil
 
-  lazy var items: [Item] = loadItems("episodes")
+  lazy var items: [Item] = loadItems(name: "episodes")
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -44,8 +45,8 @@ class MasterViewController: UITableViewController {
     }
   }
 
-  override func viewWillAppear(animated: Bool) {
-    self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+  override func viewWillAppear(_ animated: Bool) {
+    self.clearsSelectionOnViewWillAppear = self.splitViewController!.isCollapsed
     super.viewWillAppear(animated)
   }
 
@@ -56,16 +57,16 @@ class MasterViewController: UITableViewController {
 
   // MARK: - Segues
 
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "showDetail" {
       if let indexPath = self.tableView.indexPathForSelectedRow {
         let item = items[indexPath.row]
         let controller = (
-          segue.destinationViewController as! UINavigationController
+          segue.destination as! UINavigationController
         ).topViewController as! DetailViewController
         controller.detailItem = item
         controller.navigationItem.leftBarButtonItem =
-          self.splitViewController?.displayModeButtonItem()
+          self.splitViewController?.displayModeButtonItem
         controller.navigationItem.leftItemsSupplementBackButton = true
       }
     }
@@ -73,25 +74,21 @@ class MasterViewController: UITableViewController {
 
   // MARK: - Table View
 
-  override func numberOfSectionsInTableView(
-    tableView: UITableView
-  ) -> Int {
+  override func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
 
+
   override func tableView(
-    tableView: UITableView,
+    _ tableView: UITableView,
     numberOfRowsInSection section: Int
   ) -> Int {
     return items.count
   }
 
-  override func tableView(
-    tableView: UITableView,
-    cellForRowAtIndexPath indexPath: NSIndexPath
-  ) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let id = "EpisodeCellID"
-    let cell = tableView.dequeueReusableCellWithIdentifier(id, forIndexPath: indexPath
+    let cell = tableView.dequeueReusableCell(withIdentifier: id, for: indexPath
     )
     let item = items[indexPath.row]
     cell.textLabel!.text = item.title
