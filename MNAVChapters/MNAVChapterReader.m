@@ -150,9 +150,9 @@ typedef NS_ENUM(NSUInteger, ID3Frame) {
     ID3FrameEncoding = 1,
     ID3FrameShortDescription = 1,
     ID3FramePictureType = 1,
-    ID3FrameFlags,
-    ID3FrameLanguage,
-    ID3FrameSize,
+    ID3FrameFlags = 2,
+    ID3FrameLanguage = 3,
+    ID3FrameSize = 4,
     ID3FrameID = 4,
     ID3FrameFrame = 10
 };
