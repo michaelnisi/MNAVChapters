@@ -273,10 +273,10 @@ long btoi(char* bytes, long size, long offset);
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyUserURL inData:data];
         unsigned long loc = range.location;
         
-        NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
+        NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
         
-        NSData *encData = SUBDATA(data, loc + ID3FrameSize, ID3FrameEncoding);
+        NSData *encData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
         NSInteger encValue = btoi((char *)encData.bytes, encData.length, 0);
         NSInteger encoding = [self textEncoding:encValue];
         
