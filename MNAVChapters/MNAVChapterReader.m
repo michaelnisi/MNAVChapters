@@ -215,22 +215,38 @@ long btoi(char* bytes, long size, long offset);
   
   AVMetadataItem *toc = tablesOfContents.firstObject;
   
+  if (!toc) {
+    return @[];
+  }
+  
   NSData *tocData = toc.dataValue;
   
   NSUInteger flagsSize = 1;
   NSUInteger chapterCountSize = 1;
   NSUInteger index = [self dataToTermInData:tocData].length + flagsSize;
   
-  // NSData *numberOfChaptersData = SUBDATA(tocData, index, chapterCountSize);
-  // NSInteger numberOfChapters = btoi((char *)numberOfChaptersData.bytes, chapterCountSize, 0);
+  NSData *numberOfChaptersData = SUBDATA(tocData, index, chapterCountSize);
+  NSInteger numberOfChapters = btoi((char *)numberOfChaptersData.bytes, chapterCountSize, 0);
+  
+  
   
   NSData *chapterData = SUBDATA(tocData, index+chapterCountSize, tocData.length-chapterCountSize-index);
   NSMutableArray *chapterIdentifiers = [NSMutableArray new];
-
+  
   NSArray *splitData = [self splitDataByTerminator:chapterData];
   
-  for(NSData *subData in splitData) {
-    [chapterIdentifiers addObject:[NSString stringWithUTF8String:subData.bytes]];
+  if (numberOfChapters == 0) {
+    numberOfChapters = splitData.count;
+  }
+  
+  for(NSData *subData in [splitData subarrayWithRange:NSMakeRange(0, numberOfChapters)]) {
+    @try {
+      NSString *chaperIdentifier = [NSString stringWithUTF8String:subData.bytes];
+      [chapterIdentifiers addObject:chaperIdentifier];
+    }
+    @catch (NSException *exception) {
+      //
+    }
   }
   
   return [chapterIdentifiers copy];
