@@ -237,7 +237,11 @@ long btoi(char* bytes, long size, long offset);
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyAttachedPicture inData:data];
         unsigned long loc = range.location;
-        
+      
+        if (loc==NSNotFound) {
+          return nil;
+        }
+      
         NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
         
