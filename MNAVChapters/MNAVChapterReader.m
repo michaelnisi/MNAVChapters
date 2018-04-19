@@ -242,25 +242,26 @@ long btoi(char* bytes, long size, long offset);
           return nil;
         }
       
-        NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
+        NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
         
-        // NSData *encData = SUBDATA(data, loc + ID3_FRAME_SIZE, ID3_FRAME_ENCODING);
-        // NSInteger encValue = btoi((char *)encData.bytes, encData.length, 0);
-        // NSInteger encoding = [self textEncoding:encValue];
-        
+//        NSData *textEncodingData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
+//        NSInteger textEncodingValue = btoi((char *)textEncodingData.bytes, textEncodingData.length, 0);
+//        NSInteger textEncoding = [self textEncoding:textEncodingValue];
+      
         NSData *content = SUBDATA(data, loc + ID3FrameFrame + ID3FrameEncoding, size - ID3FrameEncoding);
         
         NSData *mimeTypeData = [self dataToTermInData:content];
-        // NSString *mimeType = [NSString stringWithUTF8String:mimeTypeData.bytes];
+//        NSString *mimeType = [NSString stringWithUTF8String:mimeTypeData.bytes];
+
+        content = SUBDATA(content, mimeTypeData.length+ID3FrameEncoding, content.length-mimeTypeData.length-ID3FrameEncoding);
+      
+        NSData *imageDescriptionData = [self dataToTermInData:content];
+//        NSString *imageDescriptionText = [NSString stringWithUTF8String:imageDescriptionData.bytes];
         
-        NSUInteger index = mimeTypeData.length + ID3FrameEncoding + ID3FramePictureType;
-        
-        
-        index = index + [self dataToTermInData:content].length + 2; // WTF?
-        
-        NSData *imageData = SUBDATA(content, index, content.length - index);
-        result = [UIImage imageWithData:imageData];
+        content = SUBDATA(content, imageDescriptionData.length, content.length-imageDescriptionData.length);
+     
+        result = [UIImage imageWithData:content];
     }
     @catch (NSException *exception) {
         //
