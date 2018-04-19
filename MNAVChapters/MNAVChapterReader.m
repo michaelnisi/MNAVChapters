@@ -161,9 +161,12 @@ typedef NS_ENUM(NSUInteger, ID3Header) {
     ID3HeaderSize = 4
 };
 
+// http://id3.org/id3v2.4.0-structure
 typedef NS_ENUM(NSUInteger, ID3TextEncoding) {
-    ID3TextEncodingISO,
-    ID3TextEncodingUTF16
+    ID3TextEncodingISO = 0,
+    ID3TextEncodingUTF16 = 1,
+    ID3TextEncodingUTF16BE = 2,
+    ID3TextEncodingUTF8 = 3
 };
 
 static NSString *const MNAVMetadataID3MetadataKeyChapter = @"CHAP";
@@ -329,7 +332,18 @@ long btoi(char* bytes, long size, long offset);
 }
 
 - (NSInteger)textEncoding:(NSInteger)i {
-    return i == ID3TextEncodingISO ? NSISOLatin1StringEncoding : NSUTF16StringEncoding;
+  switch (i) {
+    case ID3TextEncodingISO:
+      return NSASCIIStringEncoding;
+    case ID3TextEncodingUTF8:
+      return NSUTF8StringEncoding;
+    case ID3TextEncodingUTF16:
+      return NSUTF16StringEncoding;
+    case ID3TextEncodingUTF16BE:
+      return NSUTF16BigEndianStringEncoding;
+    default:
+      return NSASCIIStringEncoding;
+  }
 }
 
 @end
