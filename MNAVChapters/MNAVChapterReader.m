@@ -157,6 +157,14 @@ typedef NS_ENUM(NSUInteger, ID3Frame) {
     ID3FrameFrame = 10
 };
 
+typedef NS_ENUM(NSUInteger, ID3FramePositions) {
+  ID3FramePositionID = 0,
+  ID3FramePositionSize = ID3FramePositionID + ID3FrameID,
+  ID3FramePositionFlags = ID3FramePositionSize + ID3FrameSize,
+  ID3FramePositionEncoding = ID3FramePositionFlags + ID3FrameFlags,
+  ID3FramePositionText = ID3FramePositionEncoding + ID3FrameEncoding
+};
+
 typedef NS_ENUM(NSUInteger, ID3Header) {
     ID3HeaderSize = 4
 };
@@ -290,17 +298,19 @@ long btoi(char* bytes, long size, long offset);
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyTitleDescription inData:data];
         unsigned long loc = range.location;
-        NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
+      
+        NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
         NSUInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
-        NSData *titleData = SUBDATA(data, loc + ID3FrameFrame + ID3FrameEncoding, size - ID3FrameEncoding);
+      
+        NSData *encData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
+        NSInteger encValue = btoi((char *)encData.bytes, encData.length, 0);
+        NSInteger encoding = [self textEncoding:encValue];
+      
+        NSData *titleData = SUBDATA(data, loc + ID3FramePositionText, size - ID3FrameEncoding);
+      
         result = [[NSString alloc] initWithBytes:titleData.bytes
                                           length:titleData.length
-                                        encoding:NSUTF8StringEncoding];
-        if (result == nil) {
-            result =[[NSString alloc] initWithBytes:titleData.bytes
-                                             length:titleData.length
-                                           encoding:NSUTF16StringEncoding];
-        }
+                                        encoding:encoding];
     }
     @catch (NSException *exception) {
         //
