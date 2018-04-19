@@ -54,13 +54,14 @@ static NSString *const MNAVMetadataFormatID3 = @"org.id3";
     if (self) {
         _time = time;
         _duration = duration;
+        _hidden = NO;
     }
     return self;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"chapter: %@, %@, %lld, %lld]",
-            self.title, self.url, self.time.value, self.duration.value];
+    return [NSString stringWithFormat:@"chapter: [%@] %@, %@, %lld, %lld %@",
+            self.identifier, self.title, self.url, self.time.value, self.duration.value, self.hidden ? @"Hidden":@""];
 }
 
 + (MNAVChapter *)chapterWithTime:(CMTime)time duration:(CMTime)duration {
@@ -178,6 +179,7 @@ typedef NS_ENUM(NSUInteger, ID3TextEncoding) {
 };
 
 static NSString *const MNAVMetadataID3MetadataKeyChapter = @"CHAP";
+static NSString *const MNAVMetadataID3MetadataKeyTableOfContents = @"CTOC";
 
 unsigned long is_set(char *bytes, long size);
 long btoi(char* bytes, long size, long offset);
@@ -189,20 +191,56 @@ long btoi(char* bytes, long size, long offset);
     NSArray *items = [AVMetadataItem metadataItemsFromArray:its
                                                     withKey:MNAVMetadataID3MetadataKeyChapter
                                                    keySpace:MNAVMetadataFormatID3];
-    
+ 
+    NSArray <NSString *>*chapterIdentifiers = [self tableOfContentsFromMetadata:its];
+  
     NSMutableArray *chapters = [NSMutableArray new];
     for (AVMetadataItem *item in items) {
-        [chapters addObject:[self chapterFromFrame:item.dataValue]];
+        MNAVChapter *chapter = [self chapterFromFrame:item.dataValue];
+        chapter.hidden = ![chapterIdentifiers containsObject:chapter.identifier];
+        
+        [chapters addObject:chapter];
     }
-    
+  
     return [chapters sortedArrayUsingComparator:
             ^NSComparisonResult(MNAVChapter *a, MNAVChapter *b) {
                 return CMTimeCompare(a.time, b.time);
             }];
 }
 
+- (NSArray <NSString *>*)tableOfContentsFromMetadata:(NSArray *)metadata {
+  NSArray *tablesOfContents = [AVMetadataItem metadataItemsFromArray:metadata
+                                                             withKey:MNAVMetadataID3MetadataKeyTableOfContents
+                                                            keySpace:MNAVMetadataFormatID3];
+  
+  AVMetadataItem *toc = tablesOfContents.firstObject;
+  
+  NSData *tocData = toc.dataValue;
+  
+  NSUInteger flagsSize = 1;
+  NSUInteger chapterCountSize = 1;
+  NSUInteger index = [self dataToTermInData:tocData].length + flagsSize;
+  
+  // NSData *numberOfChaptersData = SUBDATA(tocData, index, chapterCountSize);
+  // NSInteger numberOfChapters = btoi((char *)numberOfChaptersData.bytes, chapterCountSize, 0);
+  
+  NSData *chapterData = SUBDATA(tocData, index+chapterCountSize, tocData.length-chapterCountSize-index);
+  NSMutableArray *chapterIdentifiers = [NSMutableArray new];
+
+  NSArray *splitData = [self splitDataByTerminator:chapterData];
+  
+  for(NSData *subData in splitData) {
+    [chapterIdentifiers addObject:[NSString stringWithUTF8String:subData.bytes]];
+  }
+  
+  return [chapterIdentifiers copy];
+}
+
 - (MNAVChapter *)chapterFromFrame:(NSData *)data {
-    NSUInteger index = [self dataToTermInData:data].length;
+    NSData *identifierData = [self dataToTermInData:data];
+    NSString *identifier = [NSString stringWithUTF8String:identifierData.bytes];
+  
+    NSUInteger index = identifierData.length;
     
     NSData *startTimeData = SUBDATA(data, index, ID3HeaderSize);
     NSData *endTimeData = SUBDATA(data, index += ID3HeaderSize, ID3HeaderSize);
@@ -221,7 +259,8 @@ long btoi(char* bytes, long size, long offset);
     // NSUInteger endOffset = btoi((char *)endOffsetData.bytes, endOffsetData.length, 0);
     
     MNAVChapter *chapter = [MNAVChapter new];
-    
+  
+    chapter.identifier = identifier;
     chapter.time = CMTimeMake(startTime, 1000);
     chapter.duration = CMTimeMake(endTime - startTime, 1000);
     chapter.title = [self titleInData:data];
@@ -344,6 +383,32 @@ long btoi(char* bytes, long size, long offset);
     [stream close];
     
     return result;
+}
+
+- (NSArray *)splitDataByTerminator:(NSData *)data {
+  NSUInteger maxLength = 1;
+  uint8_t buffer[maxLength];
+  BOOL terminated = NO;
+  NSInputStream *stream = [NSInputStream inputStreamWithData:data];
+
+  NSMutableArray *splitData = [NSMutableArray new];
+  
+  [stream open];
+  NSMutableData *result = [NSMutableData new];
+  while([stream read:buffer maxLength:maxLength] > 0) {
+    [result appendBytes:buffer length:1];
+    terminated = *(char *)buffer == '\0';
+    
+    if (terminated) {
+      [splitData addObject:result];
+      result = [NSMutableData new];
+      terminated = NO;
+    }
+  }
+
+  [stream close];
+  
+  return [splitData copy];
 }
 
 - (NSInteger)textEncoding:(NSInteger)i {
