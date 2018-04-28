@@ -331,6 +331,10 @@ long btoi(char* bytes, long size, long offset);
     
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyUserURL inData:data];
+        if (range.location == NSNotFound) {
+            return result;
+        }
+        
         unsigned long loc = range.location;
         
         NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
