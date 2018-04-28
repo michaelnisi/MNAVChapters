@@ -345,7 +345,7 @@ long btoi(char* bytes, long size, long offset);
         NSData *url = SUBDATA(content, index, size - index - ID3FrameEncoding);
         NSString *str = [[NSString alloc] initWithBytes:url.bytes length:url.length encoding:encoding];
         
-        result = [str stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        result = [str stringByRemovingPercentEncoding];
     } @catch (NSException * e) {
         //
     } @finally {
@@ -418,7 +418,6 @@ long btoi(char* bytes, long size, long offset);
         if (terminated) {
             [splitData addObject:result];
             result = [NSMutableData new];
-            terminated = NO;
         }
     }
     
