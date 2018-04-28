@@ -11,6 +11,8 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface MNAVChapter : NSObject
+@property (nonatomic, copy) NSString *identifier;
+@property (nonatomic, assign) BOOL hidden;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *url;
 @property (nonatomic) CMTime time;
