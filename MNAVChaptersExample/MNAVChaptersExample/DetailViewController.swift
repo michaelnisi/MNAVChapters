@@ -9,15 +9,15 @@
 import UIKit
 
 func chaptersFromAsset(asset: AVAsset) -> [MNAVChapter]? {
-  return MNAVChapterReader.chaptersFromAsset(asset) as? [MNAVChapter]
+  return MNAVChapterReader.chapters(from: asset) as? [MNAVChapter]
 }
 
-func update(target: DetailViewController, url: NSURL) {
-  let asset =  AVURLAsset(URL: url)
-  guard let chapters = chaptersFromAsset(asset) else {
+func update(target: DetailViewController, url: URL) {
+  let asset =  AVURLAsset(url: url, options: nil)
+  guard let chapters = chaptersFromAsset(asset: asset) else {
     return print("Oh snap!")
   }
-  dispatch_async(dispatch_get_main_queue()) {
+  DispatchQueue.main.async  {
     target.chapters = chapters
     target.tableView.reloadData()
   }
@@ -35,38 +35,38 @@ class DetailViewController: UITableViewController {
 
   // MARK: - Internals
   
-  var task: NSURLSessionTask?
+  var task: URLSessionTask?
 
   func configureView() {
     guard let str = detailItem?.url else { return }
-    guard let url = NSURL(string: str) else { return }
-    guard url != task?.originalRequest?.URL else { return }
+    guard let url = URL(string: str) else { return }
+    guard url != task?.originalRequest?.url else { return }
     
     task?.cancel()
     
-    let fm = NSFileManager.defaultManager()
-    let dir = try! fm.URLForDirectory(
-      .CachesDirectory,
-      inDomain: .UserDomainMask,
-      appropriateForURL: nil,
+    let fm = FileManager.default
+    let dir = try! fm.url(
+      for: .cachesDirectory,
+      in: .userDomainMask,
+      appropriateFor: nil,
       create: true
     )
     print(dir)
-    let targetURL = dir.URLByAppendingPathComponent(url.lastPathComponent!)
-    guard !fm.fileExistsAtPath((targetURL.path)!) else {
-      return update(self, url: targetURL)
+    let targetURL = dir.appendingPathComponent(url.lastPathComponent)
+    guard !fm.fileExists(atPath: (targetURL.path)) else {
+      return update(target: self, url: targetURL)
     }
     
-    let sess = NSURLSession.sharedSession()
-    task = sess.downloadTaskWithURL(url) { [weak self] srcURL, res, er in
-      guard er == nil else { return print(er) }
+    let sess = URLSession.shared
+    task = sess.downloadTask(with: url as URL) { [weak self] srcURL, res, er in
+      guard er == nil else { return print(er!) }
       do {
-        try fm.copyItemAtURL(srcURL!, toURL: targetURL)
+        try fm.copyItem(at: srcURL!, to: targetURL)
       } catch let er {
         print(er)
       }
       guard let target = self else { return }
-      update(target, url: targetURL)
+      update(target: target, url: targetURL)
     }
     task?.resume()
   }
@@ -75,26 +75,21 @@ class DetailViewController: UITableViewController {
   
   // MARK: - Table View
   
-  override func numberOfSectionsInTableView(
-    tableView: UITableView
-  ) -> Int {
+  override func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
   
   override func tableView(
-    tableView: UITableView,
+    _ tableView: UITableView,
     numberOfRowsInSection section: Int
   ) -> Int {
     return chapters?.count ?? 0
   }
   
-  override func tableView(
-    tableView: UITableView,
-    cellForRowAtIndexPath indexPath: NSIndexPath
-    ) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let id = "ChapterCellID"
-    let cell = tableView.dequeueReusableCellWithIdentifier(
-      id, forIndexPath: indexPath
+    let cell = tableView.dequeueReusableCell(
+      withIdentifier: id, for: indexPath as IndexPath
     )
     let chapter = chapters![indexPath.row]
     cell.textLabel?.text = chapter.title

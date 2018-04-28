@@ -150,20 +150,31 @@ typedef NS_ENUM(NSUInteger, ID3Frame) {
     ID3FrameEncoding = 1,
     ID3FrameShortDescription = 1,
     ID3FramePictureType = 1,
-    ID3FrameFlags,
-    ID3FrameLanguage,
-    ID3FrameSize,
+    ID3FrameFlags = 2,
+    ID3FrameLanguage = 3,
+    ID3FrameSize = 4,
     ID3FrameID = 4,
     ID3FrameFrame = 10
+};
+
+typedef NS_ENUM(NSUInteger, ID3FramePositions) {
+  ID3FramePositionID = 0,
+  ID3FramePositionSize = ID3FramePositionID + ID3FrameID,
+  ID3FramePositionFlags = ID3FramePositionSize + ID3FrameSize,
+  ID3FramePositionEncoding = ID3FramePositionFlags + ID3FrameFlags,
+  ID3FramePositionText = ID3FramePositionEncoding + ID3FrameEncoding
 };
 
 typedef NS_ENUM(NSUInteger, ID3Header) {
     ID3HeaderSize = 4
 };
 
+// http://id3.org/id3v2.4.0-structure
 typedef NS_ENUM(NSUInteger, ID3TextEncoding) {
-    ID3TextEncodingISO,
-    ID3TextEncodingUTF16
+    ID3TextEncodingISO = 0,
+    ID3TextEncodingUTF16 = 1,
+    ID3TextEncodingUTF16BE = 2,
+    ID3TextEncodingUTF8 = 3
 };
 
 static NSString *const MNAVMetadataID3MetadataKeyChapter = @"CHAP";
@@ -226,26 +237,31 @@ long btoi(char* bytes, long size, long offset);
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyAttachedPicture inData:data];
         unsigned long loc = range.location;
-        
-        NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
+      
+        if (loc==NSNotFound) {
+          return nil;
+        }
+      
+        NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
         
-        // NSData *encData = SUBDATA(data, loc + ID3_FRAME_SIZE, ID3_FRAME_ENCODING);
-        // NSInteger encValue = btoi((char *)encData.bytes, encData.length, 0);
-        // NSInteger encoding = [self textEncoding:encValue];
-        
+//        NSData *textEncodingData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
+//        NSInteger textEncodingValue = btoi((char *)textEncodingData.bytes, textEncodingData.length, 0);
+//        NSInteger textEncoding = [self textEncoding:textEncodingValue];
+      
         NSData *content = SUBDATA(data, loc + ID3FrameFrame + ID3FrameEncoding, size - ID3FrameEncoding);
         
         NSData *mimeTypeData = [self dataToTermInData:content];
-        // NSString *mimeType = [NSString stringWithUTF8String:mimeTypeData.bytes];
+//        NSString *mimeType = [NSString stringWithUTF8String:mimeTypeData.bytes];
+
+        content = SUBDATA(content, mimeTypeData.length+ID3FrameEncoding, content.length-mimeTypeData.length-ID3FrameEncoding);
+      
+        NSData *imageDescriptionData = [self dataToTermInData:content];
+//        NSString *imageDescriptionText = [NSString stringWithUTF8String:imageDescriptionData.bytes];
         
-        NSUInteger index = mimeTypeData.length + ID3FrameEncoding + ID3FramePictureType;
-        
-        
-        index = index + [self dataToTermInData:content].length + 2; // WTF?
-        
-        NSData *imageData = SUBDATA(content, index, content.length - index);
-        result = [UIImage imageWithData:imageData];
+        content = SUBDATA(content, imageDescriptionData.length, content.length-imageDescriptionData.length);
+     
+        result = [UIImage imageWithData:content];
     }
     @catch (NSException *exception) {
         //
@@ -262,10 +278,10 @@ long btoi(char* bytes, long size, long offset);
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyUserURL inData:data];
         unsigned long loc = range.location;
         
-        NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
+        NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
         
-        NSData *encData = SUBDATA(data, loc + ID3FrameSize, ID3FrameEncoding);
+        NSData *encData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
         NSInteger encValue = btoi((char *)encData.bytes, encData.length, 0);
         NSInteger encoding = [self textEncoding:encValue];
         
@@ -287,17 +303,19 @@ long btoi(char* bytes, long size, long offset);
     @try {
         NSRange range = [self rangeOfFrameWithID:AVMetadataID3MetadataKeyTitleDescription inData:data];
         unsigned long loc = range.location;
-        NSData *sizeData = SUBDATA(data, loc + ID3FrameID, ID3FrameSize);
+      
+        NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
         NSUInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
-        NSData *titleData = SUBDATA(data, loc + ID3FrameFrame + ID3FrameEncoding, size - ID3FrameEncoding);
+      
+        NSData *encData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
+        NSInteger encValue = btoi((char *)encData.bytes, encData.length, 0);
+        NSInteger encoding = [self textEncoding:encValue];
+      
+        NSData *titleData = SUBDATA(data, loc + ID3FramePositionText, size - ID3FrameEncoding);
+      
         result = [[NSString alloc] initWithBytes:titleData.bytes
                                           length:titleData.length
-                                        encoding:NSUTF8StringEncoding];
-        if (result == nil) {
-            result =[[NSString alloc] initWithBytes:titleData.bytes
-                                             length:titleData.length
-                                           encoding:NSUTF16StringEncoding];
-        }
+                                        encoding:encoding];
     }
     @catch (NSException *exception) {
         //
@@ -329,7 +347,18 @@ long btoi(char* bytes, long size, long offset);
 }
 
 - (NSInteger)textEncoding:(NSInteger)i {
-    return i == ID3TextEncodingISO ? NSISOLatin1StringEncoding : NSUTF16StringEncoding;
+  switch (i) {
+    case ID3TextEncodingISO:
+      return NSASCIIStringEncoding;
+    case ID3TextEncodingUTF8:
+      return NSUTF8StringEncoding;
+    case ID3TextEncodingUTF16:
+      return NSUTF16StringEncoding;
+    case ID3TextEncodingUTF16BE:
+      return NSUTF16BigEndianStringEncoding;
+    default:
+      return NSASCIIStringEncoding;
+  }
 }
 
 @end
