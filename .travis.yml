@@ -2,6 +2,8 @@ sudo: false
 language: objective-c
 osx_image: xcode9
 script: "travis_retry make test"
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -J 'MNAVChapters'
 branches:
   only:
     - master
