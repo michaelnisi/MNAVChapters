@@ -81,7 +81,7 @@ Add the **MNAVChapters** Xcode project to your workspace or, to create a release
 $ make
 ```
 
-If you have [xctool](https://github.com/facebook/xctool) installed, you can also run the tests from the command-line:
+Run tests from the command-line:
 
 ```
 $ make test
