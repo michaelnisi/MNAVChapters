@@ -1,6 +1,7 @@
 sudo: false
 language: objective-c
-script: make test
+osx_image: xcode9
+script: "travis_retry make test"
 branches:
   only:
     - master

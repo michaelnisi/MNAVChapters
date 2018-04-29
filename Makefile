@@ -1,20 +1,27 @@
-project=MNAVChapters.xcodeproj
-scheme=MNAVChapters
-sdk=iphonesimulator
+P=MNAVChapters.xcodeproj
 
-all: build
+XCODEBUILD=xcodebuild
 
-.PHONY: clean
+IOS_DEST=-destination 'platform=iOS Simulator,name=iPhone 7'
+
+all: iOS
+
 clean:
-	-rm -rf build
+	$(XCODEBUILD) clean
+	rm -rf build
 
-build:
-	xcodebuild -configuration build
+test_%:
+	$(XCODEBUILD) test -project $(P) -configuration Debug -scheme $(SCHEME) $(DEST)
 
-.PHONY: test
-test:
-	xctool test \
-		-project $(project) \
-		-scheme $(scheme) \
-		-sdk $(sdk) \
-		-reporter pretty
+build_%:
+	$(XCODEBUILD) build -project $(P) -configuration Release -scheme $(SCHEME)
+
+%iOS: SCHEME := MNAVChapters
+
+test_iOS: DEST := $(IOS_DEST)
+
+iOS: build_iOS
+
+test: test_iOS
+
+.PHONY: all, clean, test, %OS
