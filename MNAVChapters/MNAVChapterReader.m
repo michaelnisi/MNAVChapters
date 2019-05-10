@@ -9,6 +9,8 @@
 #import "MNAVChapterReader.h"
 #import <UIKit/UIKit.h>
 
+#define _unused(x) ((void)(x))
+
 # pragma mark - MNAVChapterReader
 
 static NSString *const MNAVMetadataFormatApple = @"com.apple.itunes";
@@ -268,10 +270,12 @@ long btoi(char* bytes, long size, long offset);
     
     BOOL hasStartOffset = is_set((char *)startOffsetData.bytes, startOffsetData.length);
     assert(!hasStartOffset);
+    _unused(hasStartOffset); // fix for unused warning
     // NSUInteger startOffset = btoi((char *)startOffsetData.bytes, startOffsetData.length, 0);
     
     BOOL hasEndOffset = is_set((char *)endOffsetData.bytes, endOffsetData.length);
     assert(!hasEndOffset);
+    _unused(hasEndOffset); // fix for unused warning
     // NSUInteger endOffset = btoi((char *)endOffsetData.bytes, endOffsetData.length, 0);
     
     MNAVChapter *chapter = [MNAVChapter new];
