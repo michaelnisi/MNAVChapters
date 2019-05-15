@@ -13,31 +13,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
   var window: UIWindow?
 
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+  func application(
+    _ application: UIApplication, 
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     let svc = self.window!.rootViewController as! UISplitViewController
     let i = svc.viewControllers.count - 1
     let nav = svc.viewControllers[i] as! UINavigationController
     nav.topViewController!.navigationItem.leftBarButtonItem = svc.displayModeButtonItem
     svc.delegate = self
     svc.preferredDisplayMode = .allVisible
+    
     return true
   }
 
-  // MARK: - Split view
-
-  func splitViewController(_ splitViewController: UISplitViewController,
-                           collapseSecondary secondaryViewController: UIViewController,
-                           onto primaryViewController: UIViewController) -> Bool {
-    guard let sec = secondaryViewController as? UINavigationController else {
+  func splitViewController(
+    _ splitViewController: UISplitViewController,
+    collapseSecondary secondaryViewController: UIViewController,
+    onto primaryViewController: UIViewController
+  ) -> Bool {
+    guard let sec = secondaryViewController as? UINavigationController, 
+      let top = sec.topViewController as? DetailViewController else {
       return false
     }
-    guard let top = sec.topViewController as? DetailViewController else {
-      return false
-    }
-    if top.detailItem == nil {
-      return true
-    }
-    return false
+    
+    return top.detailItem == nil
   }
 }
 
