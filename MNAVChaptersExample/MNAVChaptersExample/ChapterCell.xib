@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ChapterCell" customModule="MNAVChaptersExample" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="232" height="290"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="232" height="290"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ymB-45-ms8" userLabel="Content">
+                        <rect key="frame" x="0.0" y="0.0" width="232" height="290"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OhP-9v-HYl">
+                                <rect key="frame" x="0.0" y="0.0" width="232" height="290"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4MO-43-HRq" userLabel="Title">
+                                <rect key="frame" x="8" y="135" width="216" height="20.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="4MO-43-HRq" firstAttribute="top" secondItem="ymB-45-ms8" secondAttribute="topMargin" priority="250" id="4XI-id-2l0"/>
+                            <constraint firstItem="OhP-9v-HYl" firstAttribute="top" secondItem="ymB-45-ms8" secondAttribute="top" id="78s-oU-sPX"/>
+                            <constraint firstItem="OhP-9v-HYl" firstAttribute="leading" secondItem="ymB-45-ms8" secondAttribute="leading" id="SGo-70-dfd"/>
+                            <constraint firstItem="4MO-43-HRq" firstAttribute="leading" secondItem="ymB-45-ms8" secondAttribute="leadingMargin" priority="750" id="XMd-dC-1TE"/>
+                            <constraint firstAttribute="bottom" secondItem="OhP-9v-HYl" secondAttribute="bottom" id="fc9-85-QBH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4MO-43-HRq" secondAttribute="trailing" priority="750" id="io6-BT-eyL"/>
+                            <constraint firstItem="4MO-43-HRq" firstAttribute="centerX" secondItem="ymB-45-ms8" secondAttribute="centerX" id="rhq-9l-pEL"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="4MO-43-HRq" secondAttribute="bottom" priority="250" id="s3R-45-K2I"/>
+                            <constraint firstItem="4MO-43-HRq" firstAttribute="centerY" secondItem="ymB-45-ms8" secondAttribute="centerY" id="tNi-h7-75u"/>
+                            <constraint firstAttribute="trailing" secondItem="OhP-9v-HYl" secondAttribute="trailing" id="vny-E7-ff8"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="ymB-45-ms8" secondAttribute="trailing" id="AtJ-RF-aB5"/>
+                <constraint firstItem="ymB-45-ms8" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="hHI-Nn-CqR"/>
+                <constraint firstAttribute="bottom" secondItem="ymB-45-ms8" secondAttribute="bottom" id="hsW-vz-J30"/>
+                <constraint firstItem="ymB-45-ms8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="x1p-Sy-FXG"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="232" height="290"/>
+            <connections>
+                <outlet property="imageView" destination="OhP-9v-HYl" id="MTj-Uq-JzS"/>
+                <outlet property="titleLabel" destination="4MO-43-HRq" id="qUa-n9-4q0"/>
+            </connections>
+            <point key="canvasLocation" x="269.56521739130437" y="233.70535714285714"/>
+        </collectionViewCell>
+    </objects>
+</document>

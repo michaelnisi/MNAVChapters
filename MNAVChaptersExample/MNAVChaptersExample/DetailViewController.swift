@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import os.log
+
+private let log = OSLog(subsystem: "ink.codes.MNAVChapters", category: "app")
 
 func chaptersFromAsset(asset: AVAsset) -> [MNAVChapter]? {
   return MNAVChapterReader.chapters(from: asset) as? [MNAVChapter]
@@ -14,29 +17,25 @@ func chaptersFromAsset(asset: AVAsset) -> [MNAVChapter]? {
 
 func update(target: DetailViewController, url: URL) {
   let asset =  AVURLAsset(url: url, options: nil)
+  
   guard let chapters = chaptersFromAsset(asset: asset) else {
-    return print("Oh snap!")
+    os_log("no chapters in asset: %@", log: log, type: .error, asset)
+    return
   }
-  DispatchQueue.main.async  {
-    target.chapters = chapters
-    target.tableView.reloadData()
-  }
+  
+  dispatchPrecondition(condition: .onQueue(.main))
+  
+  target.sections = [chapters]
+  target.collectionView.reloadData()
 }
 
-class DetailViewController: UITableViewController {
-
-  // MARK: - API
-
-  var detailItem: Item? {
-    didSet {
-      self.configureView()
-    }
-  }
-
-  // MARK: - Internals
+class DetailViewController: UICollectionViewController {
+  
+  private static var chapterCellID = "ChapterCellID"
+  fileprivate var sections: [[MNAVChapter]] = [[]]
   
   var task: URLSessionTask?
-
+  
   func configureView() {
     guard let str = detailItem?.url else { return }
     guard let url = URL(string: str) else { return }
@@ -51,49 +50,80 @@ class DetailViewController: UITableViewController {
       appropriateFor: nil,
       create: true
     )
-    print(dir)
+    
+    os_log("using: %@", log: log, type: .debug, dir as CVarArg)
+    
     let targetURL = dir.appendingPathComponent(url.lastPathComponent)
+    
     guard !fm.fileExists(atPath: (targetURL.path)) else {
       return update(target: self, url: targetURL)
     }
     
-    let sess = URLSession.shared
-    task = sess.downloadTask(with: url as URL) { [weak self] srcURL, res, er in
-      guard er == nil else { return print(er!) }
+    task = URLSession.shared.downloadTask(with: url as URL) { 
+      [weak self] srcURL, res, er in
+      guard er == nil else { 
+        os_log("could not download: %@", log: log, type: .error, er! as CVarArg)
+        return 
+      }
+      
       do {
         try fm.copyItem(at: srcURL!, to: targetURL)
       } catch let er {
         print(er)
       }
+      
       guard let target = self else { return }
+      
       update(target: target, url: targetURL)
     }
+    
     task?.resume()
   }
+
+  var detailItem: Item? {
+    didSet {
+      self.configureView()
+    }
+  }
+}
+
+// MARK: - UIViewController
+
+extension DetailViewController {
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    let l = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+    l.itemSize = CGSize(width: 200, height: 200)
+    let nib = UINib(nibName: "ChapterCell", bundle: .main)
   
-  var chapters: [MNAVChapter]?
+    collectionView.register(
+      nib, forCellWithReuseIdentifier: DetailViewController.chapterCellID)
+  }
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension DetailViewController {
   
-  // MARK: - Table View
-  
-  override func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
+  override func collectionView(
+    _ collectionView: UICollectionView, 
+    numberOfItemsInSection section: Int) -> Int {
+    return sections[section].count
   }
   
-  override func tableView(
-    _ tableView: UITableView,
-    numberOfRowsInSection section: Int
-  ) -> Int {
-    return chapters?.count ?? 0
-  }
-  
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let id = "ChapterCellID"
-    let cell = tableView.dequeueReusableCell(
-      withIdentifier: id, for: indexPath as IndexPath
-    )
-    let chapter = chapters![indexPath.row]
-    cell.textLabel?.text = chapter.title
+  override func collectionView(
+    _ collectionView: UICollectionView, 
+    cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: DetailViewController.chapterCellID, 
+      for: indexPath
+    ) as! ChapterCell
+    let chapter = sections[indexPath.section][indexPath.row]
+    cell.titleLabel?.text = chapter.title
     cell.imageView?.image = chapter.artwork
+    
     return cell
   }
 }

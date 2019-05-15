@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C41B4BE228BF8FD0048A00D /* ChapterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C41B4BC228BF8FD0048A00D /* ChapterCell.swift */; };
+		4C41B4BF228BF8FD0048A00D /* ChapterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C41B4BD228BF8FD0048A00D /* ChapterCell.xib */; };
 		4C5974C31C9DC1FD00F7B8B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5974C21C9DC1FD00F7B8B7 /* AppDelegate.swift */; };
 		4C5974C51C9DC1FD00F7B8B7 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5974C41C9DC1FD00F7B8B7 /* MasterViewController.swift */; };
 		4C5974C71C9DC1FD00F7B8B7 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5974C61C9DC1FD00F7B8B7 /* DetailViewController.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C41B4BC228BF8FD0048A00D /* ChapterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterCell.swift; sourceTree = "<group>"; };
+		4C41B4BD228BF8FD0048A00D /* ChapterCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChapterCell.xib; sourceTree = "<group>"; };
 		4C5974BF1C9DC1FD00F7B8B7 /* MNAVChaptersExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MNAVChaptersExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C5974C21C9DC1FD00F7B8B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C5974C41C9DC1FD00F7B8B7 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +70,8 @@
 				4C5974C21C9DC1FD00F7B8B7 /* AppDelegate.swift */,
 				4C5974C41C9DC1FD00F7B8B7 /* MasterViewController.swift */,
 				4C5974C61C9DC1FD00F7B8B7 /* DetailViewController.swift */,
+				4C41B4BC228BF8FD0048A00D /* ChapterCell.swift */,
+				4C41B4BD228BF8FD0048A00D /* ChapterCell.xib */,
 				4C5974D71C9DC21D00F7B8B7 /* MNAVChapters-Bridging-Header.h */,
 				4C5974C81C9DC1FD00F7B8B7 /* Main.storyboard */,
 				4C5974CB1C9DC1FD00F7B8B7 /* Assets.xcassets */,
@@ -103,18 +109,18 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Michael Nisi";
 				TargetAttributes = {
 					4C5974BE1C9DC1FD00F7B8B7 = {
 						CreatedOnToolsVersion = 7.2.1;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
 			buildConfigurationList = 4C5974BA1C9DC1FD00F7B8B7 /* Build configuration list for PBXProject "MNAVChaptersExample" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -139,6 +145,7 @@
 				4C5974DD1C9DC88400F7B8B7 /* episodes.json in Resources */,
 				4C5974CC1C9DC1FD00F7B8B7 /* Assets.xcassets in Resources */,
 				4C5974CA1C9DC1FD00F7B8B7 /* Main.storyboard in Resources */,
+				4C41B4BF228BF8FD0048A00D /* ChapterCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +159,7 @@
 				4C5974C71C9DC1FD00F7B8B7 /* DetailViewController.swift in Sources */,
 				4C5974C51C9DC1FD00F7B8B7 /* MasterViewController.swift in Sources */,
 				4C5974C31C9DC1FD00F7B8B7 /* AppDelegate.swift in Sources */,
+				4C41B4BE228BF8FD0048A00D /* ChapterCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +189,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -223,7 +232,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -237,6 +246,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -273,7 +283,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -292,7 +302,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelnisi.MNAVChaptersExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/MNAVChaptersExample/MNAVChapters-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -305,7 +315,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.michaelnisi.MNAVChaptersExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/MNAVChaptersExample/MNAVChapters-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
