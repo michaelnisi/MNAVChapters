@@ -69,7 +69,7 @@ class DetailViewController: UICollectionViewController {
       do {
         try fm.copyItem(at: srcURL!, to: targetURL)
       } catch let er {
-        print(er)
+        os_log("copy failed: %@", log: log, er as CVarArg)
       }
       
       guard let target = self else { return }

@@ -9,13 +9,12 @@
 import UIKit
 
 class ChapterCell: UICollectionViewCell {
-
+  
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var imageView: UIImageView!
   
   override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
+    super.awakeFromNib()
+    // Initialization code
+  }
 }
