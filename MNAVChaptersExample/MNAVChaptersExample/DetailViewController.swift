@@ -90,16 +90,20 @@ class DetailViewController: UICollectionViewController {
 // MARK: - UIViewController
 
 extension DetailViewController {
+  
+  private func configureLayout() {
+    let l = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+    l.itemSize = CGSize(width: 200, height: 200)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    let l = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-    l.itemSize = CGSize(width: 200, height: 200)
-    let nib = UINib(nibName: "ChapterCell", bundle: .main)
-  
+
     collectionView.register(
-      nib, forCellWithReuseIdentifier: DetailViewController.chapterCellID)
+      UINib(nibName: "ChapterCell", bundle: .main), 
+      forCellWithReuseIdentifier:DetailViewController.chapterCellID)
+    
+    configureLayout()
   }
 }
 
