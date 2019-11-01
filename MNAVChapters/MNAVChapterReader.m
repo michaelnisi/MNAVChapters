@@ -300,9 +300,9 @@ long btoi(char* bytes, long size, long offset);
         NSData *sizeData = SUBDATA(data, loc + ID3FramePositionSize, ID3FrameSize);
         NSInteger size =  btoi((char *)sizeData.bytes, sizeData.length, 0);
         
-        //        NSData *textEncodingData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
-        //        NSInteger textEncodingValue = btoi((char *)textEncodingData.bytes, textEncodingData.length, 0);
-        //        NSInteger textEncoding = [self textEncoding:textEncodingValue];
+        NSData *textEncodingData = SUBDATA(data, loc + ID3FramePositionEncoding, ID3FrameEncoding);
+        NSInteger textEncodingValue = btoi((char *)textEncodingData.bytes, textEncodingData.length, 0);
+        NSInteger textEncoding = [self textEncoding:textEncodingValue];
         
         NSData *content = SUBDATA(data, loc + ID3FrameFrame + ID3FrameEncoding, size - ID3FrameEncoding);
         
@@ -311,8 +311,21 @@ long btoi(char* bytes, long size, long offset);
         
         content = SUBDATA(content, mimeTypeData.length+ID3FrameEncoding, content.length-mimeTypeData.length-ID3FrameEncoding);
         
-        NSData *imageDescriptionData = [self dataToTermInData:content];
+        NSData *imageDescriptionData;
+        switch (textEncoding) {
+            case NSUTF8StringEncoding:
+            case NSUTF16StringEncoding:
         //        NSString *imageDescriptionText = [NSString stringWithUTF8String:imageDescriptionData.bytes];
+            case NSUTF16BigEndianStringEncoding:
+                imageDescriptionData = [self dataToLongTermInData:content];
+                break;
+            case NSASCIIStringEncoding:
+                imageDescriptionData = [self dataToTermInData:content];
+                break;
+            default: //NSASCIIStringEncoding
+                imageDescriptionData = [self dataToTermInData:content];
+                break;
+        }
         
         content = SUBDATA(content, imageDescriptionData.length, content.length-imageDescriptionData.length);
         
@@ -399,6 +412,31 @@ long btoi(char* bytes, long size, long offset);
     while([stream read:buffer maxLength:maxLength] > 0 && !terminated) {
         [result appendBytes:buffer length:1];
         terminated = *(char *)buffer == '\0';
+    }
+    [stream close];
+    
+    return result;
+}
+
+- (NSData *)dataToLongTermInData:(NSData *)data {
+    NSUInteger maxLength = 1;
+    uint8_t buffer[maxLength];
+    BOOL terminated = NO;
+    NSInputStream *stream = [NSInputStream inputStreamWithData:data];
+    NSMutableData *result = [NSMutableData new];
+    [stream open];
+    while([stream read:buffer maxLength:maxLength] > 0 && !terminated) {
+        [result appendBytes:buffer length:1];
+        
+        if (result.length % 2 == 0) {
+            unsigned char *bytePtr = (unsigned char *)[data bytes];
+            char first = bytePtr[result.length - 2];
+            char second = bytePtr[result.length - 1];
+            
+            if (first == '\0' && second == '\0') {
+                terminated = true;
+            }
+        }
     }
     [stream close];
     
