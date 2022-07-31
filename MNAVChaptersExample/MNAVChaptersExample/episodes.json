@@ -1,30 +1,14 @@
 [
-{
-  "title": "Auphonic MP3",
-  "url": "https://auphonic.com/media/blog/auphonic_chapters_demo.mp3"
-},
-{
-  "title": "Auphonic MPEG-4 Part 14",
-  "url": "https://auphonic.com/media/blog/auphonic_chapters_demo.m4a"
-},
-{
-  "title": "FS115 Die blaue Maus auf dem Berg",
-  "url": "http://meta.metaebene.me/media/mm/fs115-die-blaue-maus-auf-dem-berg.mp3"
-},
-{
-  "title": "Episode #131 - Käse Tetris",
-  "url": "http://fanboys.fm/episodes/FAN131.mp3"
-},
- {
- "title": "Episode #324 - S&S Hospital",
- "url": "http://feeds.soundcloud.com/stream/425679021-martinpittenauer-fan324.mp3"
- },
- {
- "title": "ATP ",
- "url": "http://traffic.libsyn.com/atpfm/atp244.mp3"
- },
- {
- "title":"Er hat Zipfile gesagt!",
- "url":"http://feeds.soundcloud.com/stream/432188436-martinpittenauer-fan325.mp3"
- }
+  {
+    "title": "Auphonic MP3",
+    "url": "https://auphonic.com/media/blog/auphonic_chapters_demo.mp3"
+  },
+  {
+    "title": "Auphonic MPEG-4 Part 14",
+    "url": "https://auphonic.com/media/blog/auphonic_chapters_demo.m4a"
+  },
+  {
+    "title": "ATP ",
+    "url": "http://traffic.libsyn.com/atpfm/atp244.mp3"
+  }
 ]

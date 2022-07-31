@@ -74,7 +74,9 @@ class DetailViewController: UICollectionViewController {
       
       guard let target = self else { return }
       
-      update(target: target, url: targetURL)
+      DispatchQueue.main.async {
+        update(target: target, url: targetURL)
+      }
     }
     
     task?.resume()
@@ -93,7 +95,7 @@ extension DetailViewController {
   
   private func configureLayout() {
     let l = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-    l.itemSize = CGSize(width: 200, height: 200)
+    l.itemSize = .init(width: collectionView.frame.width, height: collectionView.frame.width)
   }
 
   override func viewDidLoad() {

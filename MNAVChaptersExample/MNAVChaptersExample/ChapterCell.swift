@@ -17,4 +17,5 @@ class ChapterCell: UICollectionViewCell {
     super.awakeFromNib()
     // Initialization code
   }
+
 }
